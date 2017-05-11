@@ -1,5 +1,5 @@
 # bosonnlp.js
-[![NPM](https://nodei.co/npm/bosonnlp.png?stars&downloads)](https://nodei.co/npm/bosonnlp.js/)
+[![NPM](https://nodei.co/npm/bosonnlp.js.png?stars&downloads)](https://nodei.co/npm/bosonnlp.js/)
 
 Features
 -----
