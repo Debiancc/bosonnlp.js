@@ -70,4 +70,4 @@ class BosonNLP {
   }
 }
 
-export default BosonNLP;
+module.exports = BosonNLP;
