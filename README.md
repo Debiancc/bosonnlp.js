@@ -13,7 +13,7 @@
  ```javascript
 const BosonNLP = require('bostonnlp.js');
 const bosonNLP = new BosonNLP({ apiToken : 'YOU_KEY' });
-bosonNLP.tag(['今天天气不错'])
+bosonNLP.tag(['今天天气不错'], {t2s: 1})
         .then(console.log)
         .catch(console.error);
  ```
