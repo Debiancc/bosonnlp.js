@@ -70,10 +70,4 @@ class BosonNLP {
   }
 }
 
-//module.exports = BosonNLP;
-
-
-const jkk = new BosonNLP({apiToken: 'pRegvj6k.11916.Rk-cDDC0E3Z4'});
-jkk.tag('今天天气不错').then(console.log).catch(console.error)
-
-
+module.exports = BosonNLP;
