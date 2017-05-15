@@ -3,7 +3,7 @@
 
 ## Features
 
- - Base in Nodejs 7.x stable api.
+ - Based on Nodejs 7.x stable api.
  - Use A+ promises.
  - Full action params control.
  - Catch more (e.g timeout..).
@@ -13,10 +13,69 @@
  ```javascript
 const BosonNLP = require('bostonnlp.js');
 const bosonNLP = new BosonNLP({ apiToken : 'YOU_KEY' });
-bosonNLP.tag(['今天天气不错'], {t2s: 1})
-        .then(console.log)
-        .catch(console.error);
+
+bosonNLP.tag(['今天天气不错','明天天气也不错'], {space_mode: 1})
+         .then(console.log)
+         .catch(console.error);
  ```
+
+ ## Methods
+ ### tag(texts, params)
+ - **texts**:
+   - `Required`
+   - Type: `Array` or `String`
+ - **params**:
+   - Type: `Object`
+
+ ### sentiment(texts, params)
+ - **texts**:
+   - `Required`
+   - Type: `Array` or `String`
+ - **params**:
+   - Type: `Object`
+   - Value: { auto: true } e.g..
+
+ ### ner(texts, params)
+ - **texts**:
+   - `Required`
+   - Type: `Array` or `String`
+ - **params**:
+   - Type: `Object`
+
+ ### depparser(texts, params)
+ - **texts**:
+   - `Required`
+   - Type: `Array` or `String`
+ - **params**:
+   - Type: `Object`
+
+ ### keywords(texts, params)
+ - **texts**:
+   - `Required`
+   - Type: `Array` or `String`
+ - **params**:
+   - Type: `Object`
+
+ ### classify(texts, params)
+ - **texts**:
+   - `Required`
+   - Type: `Array` or `String`
+ - **params**:
+   - Type: `Object`
+
+ ### suggest(text, params)
+ - **texts**:
+   - `Required`
+   - Type: `String`
+ - **params**:
+   - Type: `Object`
+
+ ### summary(texts, params)
+ - **texts**:
+   - `Required`
+   - Type: `Array` or `String`
+ - **params**:
+   - Type: `Object`
 
 ## License
 
