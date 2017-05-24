@@ -63,6 +63,13 @@ class BosonNLP {
       });
 
       req.on('error', err => reject(new Error(err)));
+      req.on('socket', socket => {
+        socket.setTimeout(timeout);
+        socket.on('timeout',()=>{
+          req.abort();
+          return reject('Time out.');
+        });
+      });
       //req.timeout(1000 * 10, reject(new Error('Time out')));
       req.end(body);
     };
