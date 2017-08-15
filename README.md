@@ -7,17 +7,19 @@
  - Use A+ promises.
  - Full action params control.
  - Catch more (e.g timeout..).
-
- ## Usage
+ 
+## Usage
 
  ```javascript
 const BosonNLP = require('bostonnlp.js');
-const bosonNLP = new BosonNLP({ apiToken : 'YOU_KEY' });
+const bosonNLP = new BosonNLP({ apiToken : 'YOU_KEY', timeout: 1000 * 10 });
 
 bosonNLP.tag(['今天天气不错','明天天气也不错'], {space_mode: 1})
          .then(console.log)
          .catch(console.error);
  ```
+ Default timeout value is 10s
+ 
 
  ## Methods
  ### tag(texts, params)
