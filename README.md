@@ -7,7 +7,7 @@
  - Use A+ promises.
  - Full action params control.
  - Catch more (e.g timeout..).
- 
+
 ## Usage
 
  ```javascript
@@ -20,7 +20,7 @@ bosonNLP.tag(['今天天气不错','明天天气也不错'], {space_mode: 1})
  ```
  Default timeout value is 10s.
  Need more method params detail please check http://bosonnlp.com/dev/center
- 
+
 
  ## Methods
  ### tag(texts, params)

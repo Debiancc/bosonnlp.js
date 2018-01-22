@@ -47,11 +47,11 @@ class BosonNLP {
     const timeout = this.config.timeout;
 
     const handle = (resolve, reject) => {
-      let data;
+      let data = new String();
       const req = http.request(options, res => {
         res.setEncoding('utf8');
 
-        res.on('data', chunk => data = chunk);
+        res.on('data', chunk => {data += chunk});
         res.on('end', () => {
           try {
             const _data = JSON.parse(data);
