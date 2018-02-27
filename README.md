@@ -3,8 +3,8 @@
 
 ## Features
 
- - Based on Nodejs 7.x stable api.
- - Use A+ promises.
+ - Based on Nodejs stable api.
+ - Promises.
  - Full action params control.
  - Catch more (e.g timeout..).
 
