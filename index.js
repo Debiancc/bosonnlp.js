@@ -45,7 +45,6 @@ class BosonNLP {
 
   request(options, body) {
     const timeout = this.config.timeout;
-
     const handle = (resolve, reject) => {
       let data = new String();
       const req = http.request(options, res => {
@@ -70,7 +69,6 @@ class BosonNLP {
           return reject('Time out.');
         });
       });
-      //req.timeout(1000 * 10, reject(new Error('Time out')));
       req.end(body);
     };
     return new Promise(handle);
