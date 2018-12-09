@@ -10,12 +10,19 @@ interface Props {
     timeout?: Number
 }
 
+interface TagOptions {
+    space_mode?: 0 | 1 | 2 | 3,
+    over_level?: 0 | 1 | 2 | 3 | 4,
+    t2s?: 0 | 1,
+    special_char_conv?: 0 | 1
+}
+
 interface KeywordOptions {
     topK?: number,
     segmented?: boolean
 }
 
-export default class {
+export default class BonsonNLP {
     constructor({apiToken, timeout = 1000 * 10}: Props) {
         this.timeout = timeout;
 
@@ -30,7 +37,7 @@ export default class {
             }
         };
 
-        this.reflectApi()
+        // this.reflectApi()
     }
 
     private readonly timeout: Number;
@@ -49,35 +56,27 @@ export default class {
         'summary': '/summary/analysis',
     };
 
+    // private reflectApi() {
+    //     Object.keys(this.apis)
+    //         .forEach((key) => {
+    //             Reflect.set(this, key,  (text: string | string[], options?: any) => {
+    //                 this.httpOptions.path = options
+    //                         ? `${this.apis[key]}?${QS.stringify(options)}`
+    //                         : this.apis[key];
+    //                     return this.request(text);
+    //             });
+    //         });
+    // }
 
-    public keywords(text: string | string[], options?: KeywordOptions): Promise<{word: string, k: number}[]> {
-        this.httpOptions.path = this.buildUrlWithQuery('keywords', options);
-        return this.request(text);
-    }
-
-
-    private buildUrlWithQuery(action: string, options?: object) {
-        return `${action}?${QS.stringify(options)}`
-    };
-
-    private reflectApi() {
-        Object.keys(this.apis)
-            .forEach((key) => {
-                Reflect.defineProperty(this, key, {
-                    value: (text: string | string[], options?: any) => {
-                        this.httpOptions.path = options
-                            ? `${this.apis[key]}?${QS.stringify(options)}`
-                            : this.apis[key];
-                        return this.request(text);
-                    }
-                });
-            });
-    }
-
-    private request(body: string | string[]): Promise<any> {
+    private request<T>(body: string | string[], action: string, query?: object): Promise<T> {
         const handle = (resolve: (data: any) => void, reject: (err: Error) => void) => {
             let data: string = '';
-            const req = Http.request(this.httpOptions, res => {
+            const path = `${this.apis[action]}?${QS.stringify(query)}`;
+            console.log(path)
+            const req = Http.request({
+                ...this.httpOptions,
+                ...{path}
+            }, res => {
                 res.setEncoding('utf8');
 
                 res.on('data', chunk => {
@@ -105,5 +104,14 @@ export default class {
         };
         return new Promise(handle);
     }
+
+    public keywords(text: string | string[], options?: KeywordOptions) {
+        return this.request<[number, string][][]>(text, 'keywords', options)
+    }
+
+    public tag(text: string | string[], options?: TagOptions) {
+        return this.request<{word: string[], tag: string[]}[]>(text, 'tag', options)
+    }
+
 }
 
