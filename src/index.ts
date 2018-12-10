@@ -113,5 +113,25 @@ export default class BonsonNLP {
         return this.request<{word: string[], tag: string[]}[]>(text, 'tag', options)
     }
 
+    public ner(text: string | string[], options?: {sensitivity?: 1 | 2 | 3 | 4 | 5}) {
+        return this.request<{word: string[], tag: string[], entity: [number, number, string][]}[]>(text, 'ner', options);
+    }
+
+    public sentiment(text: string | string[], options?: {model?: 'auto' | 'kitchen' | 'food' | 'news' | 'weibo'}) {
+        return this.request<[number, number][]>(text, 'sentiment', options);
+    }
+
+    public depparser(text: string | string[]) {
+        return this.request<{head: number[], role: string[], word: string[], ag: string[]}[]>(text, 'depparser');
+    }
+
+    public classify(text: string | string[]) {
+        return this.request<number[]>(text, 'classify');
+    }
+
+    public suggest(text: string, options? : {top_k?: number}) {
+        return this.request<[number, string][]>(text, 'suggest', options);
+    }
+
 }
 
