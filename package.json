@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "jest --logHeapUsage"
   },
   "repository": {
     "type": "git",
@@ -11,8 +12,17 @@
   },
   "keywords": [
     "bosonnlp",
-    "sdk"
+    "sdk",
+    "ts"
   ],
   "author": "debiancc",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.12",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.2"
+  }
 }

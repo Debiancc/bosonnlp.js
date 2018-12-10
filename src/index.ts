@@ -22,6 +22,16 @@ interface KeywordOptions {
     segmented?: boolean
 }
 
+const HttpExceptionI18n: {[key: number]: string } = {
+    400: 'HTTP 请求不满足要求。',
+    403: 'Token 验证失败。',
+    413: '上传文档超过 100 篇上限, 或者 HTTP 请求超过 2M 的大小限制。',
+    429: '超出每 15 分钟或者每天的调用额度。',
+    500: '服务故障。',
+    502: '服务故障或者在升级中。',
+    503: '服务正常，但是您的请求并发数或者连接数超过了我们系统设定的阈值。'
+};
+
 export default class BonsonNLP {
     constructor({apiToken, timeout = 1000 * 10}: Props) {
         this.timeout = timeout;
@@ -65,19 +75,23 @@ export default class BonsonNLP {
     //                         : this.apis[key];
     //                     return this.request(text);
     //             });
-    //         });
+    //         });1
     // }
 
-    private request<T>(body: string | string[], action: string, query?: object): Promise<T> {
+    private request<T>(body: unknown, action: string, query?: object): Promise<T> {
         const handle = (resolve: (data: any) => void, reject: (err: Error) => void) => {
             let data: string = '';
             const path = `${this.apis[action]}?${QS.stringify(query)}`;
-            console.log(path)
             const req = Http.request({
                 ...this.httpOptions,
                 ...{path}
             }, res => {
                 res.setEncoding('utf8');
+
+                const exception = HttpExceptionI18n[res.statusCode!];
+                if (exception) {
+                    return reject(new Error(exception));
+                }
 
                 res.on('data', chunk => {
                     data += chunk
@@ -131,6 +145,14 @@ export default class BonsonNLP {
 
     public suggest(text: string, options? : {top_k?: number}) {
         return this.request<[number, string][]>(text, 'suggest', options);
+    }
+
+    public time(options?: {pattern: string, basetime?: number}) {
+        return this.request<{timestamp: string, type: string}>('', 'time', options);
+    }
+
+    public summary(body: {title?: string, content: string}, options?: {percentage?: number, not_exceed?: boolean}) {
+        return this.request(body,'summary', options);
     }
 
 }
