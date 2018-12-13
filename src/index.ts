@@ -5,11 +5,6 @@ interface APIs {
     [key: string]: string
 }
 
-interface Props {
-    apiToken: string,
-    timeout?: Number
-}
-
 interface TagOptions {
     space_mode?: 0 | 1 | 2 | 3,
     over_level?: 0 | 1 | 2 | 3 | 4,
@@ -22,7 +17,12 @@ interface KeywordOptions {
     segmented?: boolean
 }
 
-const HttpExceptionI18n: {[key: number]: string } = {
+interface Props {
+    apiToken: string,
+    timeout?: number
+}
+
+const HttpExceptionI18n: { [key: number]: string } = {
     400: 'HTTP 请求不满足要求。',
     403: 'Token 验证失败。',
     413: '上传文档超过 100 篇上限, 或者 HTTP 请求超过 2M 的大小限制。',
@@ -33,38 +33,75 @@ const HttpExceptionI18n: {[key: number]: string } = {
 };
 
 export default class BonsonNLP {
+
+    private readonly timeout: number;
+
+    private readonly httpOptions: Http.RequestOptions;
+
+    private readonly apis: APIs = {
+        'classify': '/classify/analysis',
+        'depparser': '/depparser/analysis',
+        'keywords': '/keywords/analysis',
+        'ner': '/ner/analysis',
+        'sentiment': '/sentiment/analysis',
+        'suggest': '/suggest/analysis',
+        'summary': '/summary/analysis',
+        'tag': '/tag/analysis',
+        'time': '/time/analysis',
+    };
+
     constructor({apiToken, timeout = 1000 * 10}: Props) {
         this.timeout = timeout;
 
         this.httpOptions = {
-            host: 'api.bosonnlp.com',
-            port: 80,
-            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json",
+                "Content-Type": "application/json",
                 "X-Token": apiToken,
-            }
+            },
+            host: 'api.bosonnlp.com',
+            method: 'POST',
+            port: 80
         };
 
         // this.reflectApi()
     }
 
-    private readonly timeout: Number;
+    public keywords(text: string | string[], options?: KeywordOptions) {
+        return this.request<Array<Array<[number, string]>>>(text, 'keywords', options)
+    }
 
-    private readonly httpOptions: Http.RequestOptions;
+    public tag(text: string | string[], options?: TagOptions) {
+        return this.request<Array<{ word: string[], tag: string[] }>>(text, 'tag', options)
+    }
 
-    private readonly apis: APIs = {
-        'tag': '/tag/analysis',
-        'sentiment': '/sentiment/analysis',
-        'ner': '/ner/analysis',
-        'depparser': '/depparser/analysis',
-        'keywords': '/keywords/analysis',
-        'classify': '/classify/analysis',
-        'suggest': '/suggest/analysis',
-        'time': '/time/analysis',
-        'summary': '/summary/analysis',
-    };
+    public ner(text: string | string[], options?: { sensitivity?: 1 | 2 | 3 | 4 | 5 }) {
+        return this.request<Array<{ word: string[], tag: string[], entity: Array<[number, number, string]> }>>(text, 'ner', options);
+    }
+
+    public sentiment(text: string | string[], options?: { model?: 'auto' | 'kitchen' | 'food' | 'news' | 'weibo' }) {
+        return this.request<Array<[number, number]>>(text, 'sentiment', options);
+    }
+
+    public depparser(text: string | string[]) {
+        return this.request<Array<{ head: number[], role: string[], word: string[], ag: string[] }>>(text, 'depparser');
+    }
+
+    public classify(text: string | string[]) {
+        return this.request<number[]>(text, 'classify');
+    }
+
+    public suggest(text: string, options?: { top_k?: number }) {
+        return this.request<Array<[number, string]>>(text, 'suggest', options);
+    }
+
+    public time(options?: { pattern: string, basetime?: number }) {
+        return this.request<{ timestamp: string, type: string }>('', 'time', options);
+    }
+
+    public summary(body: { title?: string, content: string }, options?: { percentage?: number, not_exceed?: boolean }) {
+        return this.request(body, 'summary', options);
+    }
 
     // private reflectApi() {
     //     Object.keys(this.apis)
@@ -98,8 +135,7 @@ export default class BonsonNLP {
                 });
                 res.on('end', () => {
                     try {
-                        const _data = JSON.parse(data);
-                        return resolve(_data);
+                        return resolve(JSON.parse(data));
                     } catch (err) {
                         return reject(err);
                     }
@@ -119,41 +155,4 @@ export default class BonsonNLP {
         return new Promise(handle);
     }
 
-    public keywords(text: string | string[], options?: KeywordOptions) {
-        return this.request<[number, string][][]>(text, 'keywords', options)
-    }
-
-    public tag(text: string | string[], options?: TagOptions) {
-        return this.request<{word: string[], tag: string[]}[]>(text, 'tag', options)
-    }
-
-    public ner(text: string | string[], options?: {sensitivity?: 1 | 2 | 3 | 4 | 5}) {
-        return this.request<{word: string[], tag: string[], entity: [number, number, string][]}[]>(text, 'ner', options);
-    }
-
-    public sentiment(text: string | string[], options?: {model?: 'auto' | 'kitchen' | 'food' | 'news' | 'weibo'}) {
-        return this.request<[number, number][]>(text, 'sentiment', options);
-    }
-
-    public depparser(text: string | string[]) {
-        return this.request<{head: number[], role: string[], word: string[], ag: string[]}[]>(text, 'depparser');
-    }
-
-    public classify(text: string | string[]) {
-        return this.request<number[]>(text, 'classify');
-    }
-
-    public suggest(text: string, options? : {top_k?: number}) {
-        return this.request<[number, string][]>(text, 'suggest', options);
-    }
-
-    public time(options?: {pattern: string, basetime?: number}) {
-        return this.request<{timestamp: string, type: string}>('', 'time', options);
-    }
-
-    public summary(body: {title?: string, content: string}, options?: {percentage?: number, not_exceed?: boolean}) {
-        return this.request(body,'summary', options);
-    }
-
 }
-
