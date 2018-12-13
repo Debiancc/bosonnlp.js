@@ -1,9 +1,13 @@
 module.exports = {
+  verbose: true,
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec)?)\\.ts?$',
-  testMatch: null,
-  testPathIgnorePatterns: ["/node_modules/", "./__tests__/index.ts"],
+  testMatch: [
+    "**/__tests__/*.spec.ts"
+  ],
   bail: true,
-  collectCoverage: true
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "**/src/*.ts"
+  ]
 };
