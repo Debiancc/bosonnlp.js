@@ -1,25 +1,25 @@
 import * as Http from 'http';
 import QS from 'querystring';
 
-interface APIs {
+interface IAPIs {
     [key: string]: string
 }
 
-interface TagOptions {
-    space_mode?: 0 | 1 | 2 | 3,
-    over_level?: 0 | 1 | 2 | 3 | 4,
-    t2s?: 0 | 1,
-    special_char_conv?: 0 | 1
-}
-
-interface KeywordOptions {
+interface IKeywordOptions {
     topK?: number,
     segmented?: boolean
 }
 
-interface Props {
+interface IProps {
     apiToken: string,
     timeout?: number
+}
+
+interface ITagOptions {
+    space_mode?: 0 | 1 | 2 | 3,
+    over_level?: 0 | 1 | 2 | 3 | 4,
+    t2s?: 0 | 1,
+    special_char_conv?: 0 | 1
 }
 
 const HttpExceptionI18n: { [key: number]: string } = {
@@ -38,7 +38,7 @@ export default class BonsonNLP {
 
     private readonly httpOptions: Http.RequestOptions;
 
-    private readonly apis: APIs = {
+    private readonly apis: IAPIs = {
         'classify': '/classify/analysis',
         'depparser': '/depparser/analysis',
         'keywords': '/keywords/analysis',
@@ -50,7 +50,7 @@ export default class BonsonNLP {
         'time': '/time/analysis',
     };
 
-    constructor({apiToken, timeout = 1000 * 10}: Props) {
+    constructor({apiToken, timeout = 1000 * 10}: IProps) {
         this.timeout = timeout;
 
         this.httpOptions = {
@@ -67,11 +67,11 @@ export default class BonsonNLP {
         // this.reflectApi()
     }
 
-    public keywords(text: string | string[], options?: KeywordOptions) {
+    public keywords(text: string | string[], options?: IKeywordOptions) {
         return this.request<Array<Array<[number, string]>>>(text, 'keywords', options)
     }
 
-    public tag(text: string | string[], options?: TagOptions) {
+    public tag(text: string | string[], options?: ITagOptions) {
         return this.request<Array<{ word: string[], tag: string[] }>>(text, 'tag', options)
     }
 
