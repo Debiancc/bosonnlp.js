@@ -3,8 +3,7 @@ import instance from './index'
 describe('Tag action suite', () => {
     it('should be response', async () => {
         const result = await instance.tag('今天天气不错');
-        expect(result).not.toBeNull();
-        console.log(result);
+        expect(result).toEqual([ { word: [ '今天', '天气', '不错' ], tag: [ 't', 'n', 'a' ] } ]);
     });
 });
 
@@ -12,7 +11,11 @@ describe('Keyword action suite', () => {
     it('should be response', async () => {
         const result = await instance.keywords('今天天气不错');
         console.log(result);
-        expect(result).not.toBeNull();
+        expect(result).toEqual( [
+            [ 0.7769201168828866, '天气' ],
+            [ 0.5276443786755156, '不错' ],
+            [ 0.3434916542278732, '今天' ]
+        ]);
     });
 });
 
