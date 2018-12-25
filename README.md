@@ -1,5 +1,6 @@
 # bosonnlp.js
-[![NPM](https://nodei.co/npm/bosonnlp.js.png?stars&downloads)](https://nodei.co/npm/bosonnlp.js/)
+[![Build Status](https://travis-ci.org/Debiancc/bosonnlp.js.svg?branch=master)](https://travis-ci.org/Debiancc/bosonnlp.js)
+[![](https://img.shields.io/npm/v/bosonnlp.js.svg?style=flat-square)](https://www.npmjs.com/package/bosonnlp.js) [![Greenkeeper badge](https://badges.greenkeeper.io/Debiancc/bosonnlp.js.svg)](https://greenkeeper.io/)
 
 ## Features
 
