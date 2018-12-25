@@ -1,9 +1,11 @@
 {
   "name": "bosonnlp.js",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "files": ["lib/**/*"],
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "test": "jest --logHeapUsage",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
