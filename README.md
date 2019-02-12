@@ -16,12 +16,12 @@ const BosonNLP = require('bostonnlp.js');
 const bosonNLP = new BosonNLP({ apiToken : 'YOU_KEY', timeout: 1000 * 10 });
 
 (async () => {
- try {
-   const result = await bosonNLP.tag(['苟利国家生死已','南京市长江大桥'], { space_mode: 1 });
-   console.log(result);
- } catch (error) {
-   throw error;
- }
+   try {
+     const result = await bosonNLP.tag(['苟利国家生死已','南京市长江大桥'], { space_mode: 1 });
+     console.log(result);
+   } catch (error) {
+     throw error;
+   }
 })()
  ```
  Default timeout value is 10s.
